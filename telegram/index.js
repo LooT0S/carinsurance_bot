@@ -10,6 +10,9 @@ const tariffPlanElec = SceneOranta.SelectTariffPlanElec();
 const tariffPlanPepr = SceneOranta.SelectTariffPlanPepr();
 const franchise = SceneOranta.SelectFranchise();
 const registrationOfTheVehicleOwner = SceneOranta.SelectRegistrationOfTheVehicleOwner();
+
+const serialData = SceneOranta.SelectSerialData();
+const numData = SceneOranta.SelectNumData();
 const vehicleNum = SceneOranta.SelectVehicleNum();
 
 const reginOwner = SceneOranta.SelectRegionOwner();
@@ -46,6 +49,8 @@ const titleStreet = SceneOranta.SelectTitleStreet();
 const numHouse = SceneOranta.SelectNumHouse();
 const numApart = SceneOranta.SelectNumApart();
 
+//const getOranta = ScenOrantaPolicy.getOranta();
+
 const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.use(Telegraf.log());
 const stage = new Scenes.Stage([
@@ -56,6 +61,8 @@ const stage = new Scenes.Stage([
     tariffPlanPepr,
     franchise,
     registrationOfTheVehicleOwner,
+    serialData,
+    numData,
     vehicleNum,
     reginOwner,
     crymeDistrict,

@@ -1,4 +1,8 @@
 const { Scenes, Markup } = require('telegraf');
+const Redis = require('ioredis');
+const axios = require('axios');
+
+const redisClient = new Redis();
 
 class SceneOrantaPolicy {
     SlectDepartament() {
@@ -16,11 +20,13 @@ class SceneOrantaPolicy {
 
         departament.action('oranta', async (ctx) => {
             await ctx.reply('Ви обрали: 2313 Смілянське районне відділення НАСК "Оранта"');
+            await redisClient.set('departament', '2313 Смілянське районне відділення НАСК "Оранта"');
             ctx.scene.enter('typeOfPerson');
         });
 
         departament.action('tpp', async (ctx) => {
             await ctx.reply('Ви обрали: 231341 ТПП 231341');
+            await redisClient.set('departament', '231341 ТПП 231341');
             ctx.scene.enter('typeOfPerson');
         });
         return departament;
@@ -41,6 +47,7 @@ class SceneOrantaPolicy {
 
         typeOfPerson.action('fiz', async (ctx) => {
             await ctx.reply('Ви обрали: фіз. особа');
+            await redisClient.set('typeOfPerson', 'фіз. особа');
             ctx.scene.enter('typeOfPolicy');
         });
 
@@ -66,11 +73,13 @@ class SceneOrantaPolicy {
 
         typeOfPolicy.action('elect', async (ctx) => {
             await ctx.reply('Ви обрали: Електронний поліс');
+            await redisClient.set('typeOfPolicy', 'Електронний поліс');
             ctx.scene.enter('tariffPlanElec');
         });
 
         typeOfPolicy.action('paper', async (ctx) => {
             await ctx.reply('Ви обрали: Паперовий поліс');
+            await redisClient.set('typeOfPolicy', 'Паперовий поліс');
             ctx.scene.enter('tariffPlanPepr');
         });
         return typeOfPolicy;
@@ -96,26 +105,31 @@ class SceneOrantaPolicy {
 
         tariffPlanElec.action('ep1', async (ctx) => {
             await ctx.reply('Ви обрали: ЕП Дисконт');
+            await redisClient.set('tariffPlanElec', 'ЕП Дисконт');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanElec.action('ep2', async (ctx) => {
             await ctx.reply('Ви обрали: ЕП Стандарт 12П АП3 Нов');
+            await redisClient.set('tariffPlanElec', 'ЕП Стандарт 12П АП3 Нов');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanElec.action('ep3', async (ctx) => {
             await ctx.reply('Ви обрали: ЕП Стандарт 1М_3 ФО 2022');
+            await redisClient.set('tariffPlanElec', 'ЕП Стандарт 1М_3 ФО 2022');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanElec.action('ep4', async (ctx) => {
             await ctx.reply('Ви обрали: ЕП Стандарт 2М_2 ФО 2022');
+            await redisClient.set('tariffPlanElec', 'ЕП Стандарт 2М_2 ФО 2022');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanElec.action('ep5', async (ctx) => {
             await ctx.reply('Ви обрали: ЕП Стандарт 8П ФО АП3 Нов');
+            await redisClient.set('tariffPlanElec', 'ЕП Стандарт 8П ФО АП3 Нов');
             ctx.scene.enter('franchise');
         });
 
@@ -140,26 +154,31 @@ class SceneOrantaPolicy {
 
         tariffPlanPepr.action('p1', async (ctx) => {
             await ctx.reply('Ви обрали: Стандарт 12П АП3 Нов');
+            await redisClient.set('tariffPlanPepr', 'Стандарт 12П АП3 Нов');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanPepr.action('p2', async (ctx) => {
             await ctx.reply('Ви обрали: Стандарт 1М_3 ФО 2022');
+            await redisClient.set('tariffPlanPepr', 'Стандарт 1М_3 ФО 2022');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanPepr.action('p3', async (ctx) => {
             await ctx.reply('Ви обрали: Стандарт 2М_2 ФО 2022');
+            await redisClient.set('tariffPlanPepr', 'Стандарт 2М_2 ФО 2022');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanPepr.action('p4', async (ctx) => {
             await ctx.reply('Ви обрали: ЕП Стандарт 2М_2 ФО 2022');
+            await redisClient.set('tariffPlanPepr', 'ЕП Стандарт 2М_2 ФО 2022');
             ctx.scene.enter('franchise');
         });
 
         tariffPlanPepr.action('p5', async (ctx) => {
             await ctx.reply('Ви обрали: Стандарт 8П ФО АП3 Нов');
+            await redisClient.set('tariffPlanPepr', 'Стандарт 8П ФО АП3 Нов');
             ctx.scene.enter('franchise');
         });
 
@@ -182,16 +201,19 @@ class SceneOrantaPolicy {
 
         franchise.action('zero', async (ctx) => {
             await ctx.reply('Ви обрали: франшизу 0 грн');
+            await redisClient.set('franchise', '0 грн');
             ctx.scene.enter('registrationOfTheVehicleOwner');
         });
 
         franchise.action('one', async (ctx) => {
             await ctx.reply('Ви обрали: франшизу 1000 грн');
+            await redisClient.set('franchise', '1500 грн');
             ctx.scene.enter('registrationOfTheVehicleOwner');
         });
 
         franchise.action('two', async (ctx) => {
             await ctx.reply('Ви обрали: 2500 грн');
+            await redisClient.set('franchise', '2500 грн');
             ctx.scene.enter('registrationOfTheVehicleOwner');
         });
         return franchise;
@@ -213,20 +235,51 @@ class SceneOrantaPolicy {
 
         registrationOfTheVehicleOwner.action('ukr', async (ctx) => {
             await ctx.reply('Ви обрали: реєстрація Україна');
-            ctx.scene.enter('vehicleNum');
+            await redisClient.set('registrationOfTheVehicleOwner', 'Україна');
+            ctx.scene.enter('serialData');
         });
 
         registrationOfTheVehicleOwner.action('othercontry', async (ctx) => {
             await ctx.reply('Ви обрали: реєстрація в іншій країні');
-            ctx.scene.enter('vehicleNum');
+            await redisClient.set('registrationOfTheVehicleOwner', 'Інша країна');
+            ctx.scene.enter('serialData');
         });
 
         registrationOfTheVehicleOwner.action('tmpnum', async (ctx) => {
             await ctx.reply('Ви обрали: тимчасові номера');
-            ctx.scene.enter('vehicleNum');
+            await redisClient.set('registrationOfTheVehicleOwner', 'Тимчасові номери');
+            ctx.scene.enter('serialData');
         });
 
         return registrationOfTheVehicleOwner;
+    }
+
+    SelectSerialData() {
+        const serialData = new Scenes.BaseScene('serialData');
+        serialData.enter(async (ctx) => {
+            await ctx.reply('Введіть серію тарнспортного паспорту авто:');
+        });
+
+        serialData.on('text', async (ctx) => {
+            await ctx.reply(`Ви вели серію ${ctx.message.text}`);
+            await redisClient.set('serialData', ctx.message.text);
+            ctx.scene.enter('numData');
+        });
+        return serialData;
+    }
+
+    SelectNumData() {
+        const numData = new Scenes.BaseScene('numData');
+        numData.enter(async (ctx) => {
+            await ctx.reply('Введіть номер тарнспортного паспорту авто:');
+        });
+
+        numData.on('text', async (ctx) => {
+            await ctx.reply(`Ви вели номер ${ctx.message.text}`);
+            await redisClient.set('numData', ctx.message.text);
+            ctx.scene.enter('vehicleNum');
+        });
+        return numData;
     }
 
     SelectVehicleNum() {
@@ -237,6 +290,7 @@ class SceneOrantaPolicy {
 
         vehicleNum.on('text', async (ctx) => {
             await ctx.reply(`Ви вели номер ${ctx.message.text}`);
+            await redisClient.set('vehicleNum', ctx.message.text);
             ctx.scene.enter('regionOwner');
         });
         return vehicleNum;
@@ -282,66 +336,79 @@ class SceneOrantaPolicy {
 
         regionOwner.action('crimea', async (ctx) => {
             await ctx.reply('Ви обрали: АР Крим');
+            await redisClient.set('regionOwner', 'АР Крим');
             ctx.scene.enter('crymeDistrict');
         });
 
         regionOwner.action('vinnytsiaRg', async (ctx) => {
             await ctx.reply('Ви обрали: Вінницьку область');
+            await redisClient.set('regionOwner', 'Вінницька область');
             ctx.scene.enter('vinnytsiaDistrict');
         });
 
         regionOwner.action('volynRg', async (ctx) => {
             await ctx.reply('Ви обрали: Волинську область');
+            await redisClient.set('regionOwner', 'Волинська область');
             ctx.scene.enter('volynDistrict');
         });
 
         regionOwner.action('dnipropetrovskRg', async (ctx) => {
             await ctx.reply('Ви обрали: Дніпропетровську область');
+            await redisClient.set('regionOwner', 'Дніпропетровська область');
             ctx.scene.enter('dnipropetrovskDistrict');
         });
 
         regionOwner.action('donetskRg', async (ctx) => {
             await ctx.reply('Ви обрали: Донецьку область');
+            await redisClient.set('regionOwner', 'Донецька область');
             ctx.scene.enter('donetskDistrict');
         });
 
         regionOwner.action('zhytomyrRg', async (ctx) => {
             await ctx.reply('Ви обрали: Житомирську область');
+            await redisClient.set('regionOwner', 'Житомирська область');
             ctx.scene.enter('zhytomyrDistrict');
         });
 
         regionOwner.action('transcarpathianRg', async (ctx) => {
             await ctx.reply('Ви обрали: Закарпатську область');
+            await redisClient.set('regionOwner', 'Закарпатська область');
             ctx.scene.enter('transcarpathianDistrict');
         });
 
         regionOwner.action('zaporizhzhiaRg', async (ctx) => {
             await ctx.reply('Ви обрали: Запоріжську область');
+            await redisClient.set('regionOwner', 'Запорізька область');
             ctx.scene.enter('zaporizhzhiaDistrict');
         });
 
         regionOwner.action('ivanoFrankivskRg', async (ctx) => {
             await ctx.reply('Ви обрали: Івано-Франківську область');
+            await redisClient.set('regionOwner', 'Івано-франківська область');
             ctx.scene.enter('ivanoFrankivskDistrict');
         });
 
         regionOwner.action('kyivRg', async (ctx) => {
             await ctx.reply('Ви обрали: Київську область');
+            await redisClient.set('regionOwner', 'Київська область');
             ctx.scene.enter('kyivDistrict');
         });
 
         regionOwner.action('kirovohradRg', async (ctx) => {
             await ctx.reply('Ви обрали: Кіровоградську область');
+            await redisClient.set('regionOwner', 'Кіровоградська область');
             ctx.scene.enter('kirovohradDistrict');
         });
 
         regionOwner.action('luhanskRg', async (ctx) => {
             await ctx.reply('Ви обрали: Луганську область');
+            await redisClient.set('regionOwner', 'Луганська область');
             ctx.scene.enter('luhanskDistrict');
         });
 
         regionOwner.action('lvivRg', async (ctx) => {
             await ctx.reply('Ви обрали: Львівську область');
+            await redisClient.set('regionOwner', 'Львівська область');
             ctx.scene.enter('lvivDistrict');
         });
         /*
@@ -357,61 +424,73 @@ class SceneOrantaPolicy {
 */
         regionOwner.action('mykolaivRg', async (ctx) => {
             await ctx.reply('Ви обрали: Миколаївську область');
+            await redisClient.set('regionOwner', 'Миколаївська область');
             ctx.scene.enter('mykolaivDistrict');
         });
 
         regionOwner.action('odesaRg', async (ctx) => {
             await ctx.reply('Ви обрали: Одеську область');
+            await redisClient.set('regionOwner', 'Одеська область');
             ctx.scene.enter('odesaDistrict');
         });
 
         regionOwner.action('poltavaRg', async (ctx) => {
             await ctx.reply('Ви обрали: Полтавську область');
+            await redisClient.set('regionOwner', 'Полтавська область');
             ctx.scene.enter('poltavaDistrict');
         });
 
         regionOwner.action('rivneRg', async (ctx) => {
             await ctx.reply('Ви обрали: Рівенську область');
+            await redisClient.set('regionOwner', 'Рівненська область');
             ctx.scene.enter('rivneDistrict');
         });
 
         regionOwner.action('sumyRg', async (ctx) => {
             await ctx.reply('Ви обрали: Сумську область');
+            await redisClient.set('regionOwner', 'Сумська область');
             ctx.scene.enter('sumyDistrict');
         });
 
         regionOwner.action('ternopilRg', async (ctx) => {
             await ctx.reply('Ви обрали: Тернопілську область');
+            await redisClient.set('regionOwner', 'Тернопільська область');
             ctx.scene.enter('ternopilDestrict');
         });
 
         regionOwner.action('kharkivRg', async (ctx) => {
             await ctx.reply('Ви обрали: Харківську область');
+            await redisClient.set('regionOwner', 'Харківська область');
             ctx.scene.enter('kharkivDistrict');
         });
 
         regionOwner.action('khersonRg', async (ctx) => {
             await ctx.reply('Ви обрали: Херсонську область');
+            await redisClient.set('regionOwner', 'Херсонська область');
             ctx.scene.enter('khersonDistrict');
         });
 
         regionOwner.action('khmelnytskyiRg', async (ctx) => {
             await ctx.reply('Ви обрали: Хмельницьку область');
+            await redisClient.set('regionOwner', 'Хмельницька область');
             ctx.scene.enter('khmelnytskyiDistrict');
         });
 
         regionOwner.action('cherkasyRg', async (ctx) => {
             await ctx.reply('Ви обрали: Черкаську область');
+            await redisClient.set('regionOwner', 'Черкаська область');
             ctx.scene.enter('cherkasyDistrict');
         });
 
         regionOwner.action('chernivtsiRg', async (ctx) => {
             await ctx.reply('Ви обрали: Черніветську область');
+            await redisClient.set('regionOwner', 'Чернівецька область');
             ctx.scene.enter('chernivtsiDistrict');
         });
 
         regionOwner.action('chernihivRg', async (ctx) => {
             await ctx.reply('Ви обрали: Чернігівську область');
+            await redisClient.set('regionOwner', 'Чернігівська область');
             ctx.scene.enter('chernihivDistrict');
         });
 
@@ -476,106 +555,127 @@ class SceneOrantaPolicy {
 
         crymeDistrict.action('alushta', async (ctx) => {
             await ctx.reply('Ви обрали район Криму Алушта');
+            await redisClient.set('crymeDistrict', 'Алушта');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('armeniansk', async (ctx) => {
             await ctx.reply('Ви обрали район Криму Армянськ');
+            await redisClient.set('crymeDistrict', 'Армянськ');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('bakhchisarayskyi', async (ctx) => {
             await ctx.reply('Ви обрали Бахчисарайський район Криму ');
+            await redisClient.set('crymeDistrict', 'Бахчисарайський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('biloghirsky', async (ctx) => {
             await ctx.reply('Ви обрали Білогірський район Криму');
+            await redisClient.set('crymeDistrict', 'Білогірський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('dzhankoy', async (ctx) => {
             await ctx.reply('Ви обрали Джанкойський район Криму');
+            await redisClient.set('crymeDistrict', 'Джанкойський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('yevpatoria', async (ctx) => {
             await ctx.reply('Ви обрали район Криму Євпаторія');
+            await redisClient.set('crymeDistrict', 'Євпаторія');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('kirovsky', async (ctx) => {
             await ctx.reply('Ви обрали Кіровський район Криму');
+            await redisClient.set('crymeDistrict', 'Кіровський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('krasnogvardiyskyi', async (ctx) => {
             await ctx.reply('Ви обрали Красногвардійський район Криму');
+            await redisClient.set('crymeDistrict', 'Красногвардійський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('krasnoperekopskyi', async (ctx) => {
             await ctx.reply('Ви обрали Красноперекопський район Криму');
+            await redisClient.set('crymeDistrict', 'Красноперекопський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('leninsky', async (ctx) => {
             await ctx.reply('Ви обрали Ленінський район Криму');
+            await redisClient.set('crymeDistrict', 'Ленінський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('nizhnyohirskyi', async (ctx) => {
             await ctx.reply('Ви обрали Нижньогірський район Криму');
+            await redisClient.set('crymeDistrict', 'Нижньогірський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('pervomaisyki', async (ctx) => {
             await ctx.reply('Ви обрали Первомайський район Криму');
+            await redisClient.set('crymeDistrict', 'Первомайський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('rosdolenskyi', async (ctx) => {
             await ctx.reply('Ви обрали Роздольненський район Криму');
+            await redisClient.set('crymeDistrict', 'Роздольненський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('saksky', async (ctx) => {
             await ctx.reply('Ви обрали Сакський район Криму');
+            await redisClient.set('crymeDistrict', 'Сакський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('simferopol', async (ctx) => {
             await ctx.reply('Ви обрали Сімферополь');
+            await redisClient.set('crymeDistrict', 'Сімферополь');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('simferopolDst', async (ctx) => {
             await ctx.reply('Ви обрали Сімферопольський район Криму');
+            await redisClient.set('crymeDistrict', 'Сімферопольський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('soviet', async (ctx) => {
             await ctx.reply('Ви обрали Совєтський район Криму');
+            await redisClient.set('crymeDistrict', 'Совєтський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('sudak', async (ctx) => {
             await ctx.reply('Ви обрали Судак');
+            await redisClient.set('crymeDistrict', 'Судак');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('feodosia', async (ctx) => {
             await ctx.reply('Ви обрали Феодосія');
+            await redisClient.set('crymeDistrict', 'Феодосія');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('chornomorsky', async (ctx) => {
             await ctx.reply('Ви обрали Чорноморський район Криму');
+            await redisClient.set('crymeDistrict', 'Чорноморський район');
             ctx.scene.enter('settlement');
         });
 
         crymeDistrict.action('yalta', async (ctx) => {
             await ctx.reply('Ви обрали Ялта');
+            await redisClient.set('crymeDistrict', 'Ялта');
             ctx.scene.enter('settlement');
         });
 
@@ -629,141 +729,169 @@ class SceneOrantaPolicy {
 
         vinnytsiaDistrict.action('barsky', async (ctx) => {
             await ctx.reply('Ви обрали Барський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Барський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('bershadsky', async (ctx) => {
             await ctx.reply('Ви обрали Бершадський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Бершадський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('vinnytsia', async (ctx) => {
             await ctx.reply('Ви обрали Вінницький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Вінницький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('haysynskyi', async (ctx) => {
             await ctx.reply('Ви обрали Гайсинський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Гайсинський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('zhmerinsky', async (ctx) => {
             await ctx.reply('Ви обрали Жмеринський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Жмеринський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('illinetskyi', async (ctx) => {
             await ctx.reply('Ви обрали Іллінецький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Іллінецький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('kalinovsky', async (ctx) => {
             await ctx.reply('Ви обрали Калинівський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Калинівський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('kozyatinsky', async (ctx) => {
             await ctx.reply('Ви обрали Козятинський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Козятинський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('kryzhopolskyi', async (ctx) => {
             await ctx.reply('Ви обрали Крижопільський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Крижопільський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('lipovetskyi', async (ctx) => {
             await ctx.reply('Ви обрали Липовецький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Липовецький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('litinsky', async (ctx) => {
             await ctx.reply('Ви обрали Літинський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Літинський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('mohylovPodilskyi', async (ctx) => {
             await ctx.reply('Ви обрали Могилів-подільський');
+            await redisClient.set('vinnytsiaDistrict', 'Могилів-подільський');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('mogilevPodilskyiDst', async (ctx) => {
             await ctx.reply('Ви обрали Могилів-подільський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Могилів-подільський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('murovanokurilovetskyi', async (ctx) => {
             await ctx.reply('Ви обрали Мурованокуриловецький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Мурованокуриловецький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('nemyrivskyi', async (ctx) => {
             await ctx.reply('Ви обрали Немирівський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Немирівський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('orativskyi', async (ctx) => {
             await ctx.reply('Ви обрали Оратівський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Оратівський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('pischanskyi', async (ctx) => {
             await ctx.reply('Ви обрали Піщанський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Піщанський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('pogrebyschenskyi', async (ctx) => {
             await ctx.reply('Ви обрали Погребищенський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Погребищенський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('teplytskyi', async (ctx) => {
             await ctx.reply('Ви обрали Теплицький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Теплицький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('tyvrovsky', async (ctx) => {
             await ctx.reply('Ви обрали Тиврівський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Тиврівський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('tomashpilskyi', async (ctx) => {
             await ctx.reply('Ви обрали Томашпільський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Томашпільський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('trostyanetskyi', async (ctx) => {
             await ctx.reply('Ви обрали Тростянецький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Тростянецький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('tulchynskyi', async (ctx) => {
             await ctx.reply('Ви обрали Тульчинський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Тульчинський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('khmilnytskyi', async (ctx) => {
             await ctx.reply('Ви обрали Хмільницький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Хмільницький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('chernivtsi', async (ctx) => {
             await ctx.reply('Ви обрали Чернівецький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Чернівецький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('chechelnytskyi', async (ctx) => {
             await ctx.reply('Ви обрали Чечельницький район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Чечельницький район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('shargorodskyi', async (ctx) => {
             await ctx.reply('Ви обрали Шаргородський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Шаргородський район');
             ctx.scene.enter('settlement');
         });
 
         vinnytsiaDistrict.action('yampilskyi', async (ctx) => {
             await ctx.reply('Ви обрали Ямпільський район Вінниці');
+            await redisClient.set('vinnytsiaDistrict', 'Ямпільський район');
             ctx.scene.enter('settlement');
         });
 
@@ -4435,6 +4563,7 @@ class SceneOrantaPolicy {
 
         settlement.on('text', async (ctx) => {
             await ctx.reply(`Ви обрали налений пункт ${ctx.message.text}`);
+            await redisClient.set('settlement', 'ctx.message.text');
             ctx.scene.enter('streetIndex');
         });
         return settlement;
@@ -4448,6 +4577,7 @@ class SceneOrantaPolicy {
 
         streetIndex.on('text', async (ctx) => {
             await ctx.reply(`Ви вказали індекс ${ctx.message.text}`);
+            await redisClient.set('streetIndex', ctx.message.text);
             ctx.scene.enter('typeStreet');
         });
         return streetIndex;
@@ -4488,81 +4618,97 @@ class SceneOrantaPolicy {
 
         typeStreet.action('boulevard', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці бульвар');
+            await redisClient.set('typeStreet', 'бульвар');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('entrance', async (ctx) => {
             await ctx.reply("Ви обрали тип вулиці в'їзд");
+            await redisClient.set('typeStreet', "в'їзд");
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('street', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці вулиця');
+            await redisClient.set('typeStreet', 'вулиця');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('road', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці дорога');
+            await redisClient.set('typeStreet', 'дорога');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('quarter', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці квартал');
+            await redisClient.set('typeStreet', 'квартал');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('borderCrossing', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці кордонний перехід');
+            await redisClient.set('typeStreet', 'кордонний перехід');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('maidan', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці майдан');
+            await redisClient.set('typeStreet', 'майдан');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('microdistrict', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці мікрорайон');
+            await redisClient.set('typeStreet', 'мікрорайон');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('quay', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці набережна');
+            await redisClient.set('typeStreet', 'набережна');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('area', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці площа');
+            await redisClient.set('typeStreet', 'площа');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('lane', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці провулок');
+            await redisClient.set('typeStreet', 'провулок');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('journey', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці проїзд');
+            await redisClient.set('typeStreet', 'проїзд');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('prospectus', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці проспект');
+            await redisClient.set('typeStreet', 'проспект');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('impasse', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці тупик');
+            await redisClient.set('typeStreet', 'тупик');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('takeOff', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці узвіз');
+            await redisClient.set('typeStreet', 'узвіз');
             ctx.scene.enter('titleStreet');
         });
 
         typeStreet.action('highway', async (ctx) => {
             await ctx.reply('Ви обрали тип вулиці шоссе');
+            await redisClient.set('typeStreet', 'шоссе');
             ctx.scene.enter('titleStreet');
         });
 
@@ -4577,19 +4723,30 @@ class SceneOrantaPolicy {
 
         titleStreet.on('text', async (ctx) => {
             await ctx.reply(`Ви вказали назву вулиці ${ctx.message.text}`);
+            if (ctx.message.text === '-' || ctx.message.text === '' || ctx.message.text === ' ') {
+                await redisClient.set('titleStreet', '');
+            } else {
+                await redisClient.set('titleStreet', ctx.message.text);
+            }
+
             ctx.scene.enter('numHouse');
         });
         return titleStreet;
     }
 
     SelectNumHouse() {
-        const numHouse = new Scenes.BaseScene('numnumHouse');
+        const numHouse = new Scenes.BaseScene('numHouse');
         numHouse.enter(async (ctx) => {
             await ctx.reply('Введіть номер будинку');
         });
 
         numHouse.on('text', async (ctx) => {
             await ctx.reply(`Ви вказали номер будинку ${ctx.message.text}`);
+            if (ctx.message.text === '-' || ctx.message.text === '' || ctx.message.text === ' ') {
+                await redisClient.set('numHouse', '');
+            } else {
+                await redisClient.set('numHouse', ctx.message.text);
+            }
             ctx.scene.enter('numApart');
         });
         return numHouse;
@@ -4603,10 +4760,64 @@ class SceneOrantaPolicy {
 
         numApart.on('text', async (ctx) => {
             await ctx.reply(`Ви вказали номер квартири ${ctx.message.text}`);
-            //ctx.scene.enter('numApart');
+            if (ctx.message.text === '-' || ctx.message.text === '' || ctx.message.text === ' ') {
+                await redisClient.set('numApart', '');
+            } else {
+                await redisClient.set('numApart', ctx.message.text);
+            }
+            this.getOranta();
             ctx.scene.leave();
         });
         return numApart;
+    }
+
+    async getOranta() {
+        const departamentRd = await redisClient.get('departament');
+        const typeOfPersonRd = await redisClient.get('typeOfPerson');
+        const typeOfPolicyRd = await redisClient.get('typeOfPolicy');
+        const tariffPlanElecRd = await redisClient.get('tariffPlanElec');
+        const tariffPlanPeprRd = await redisClient.get('tariffPlanPepr');
+        const franchiseRd = await redisClient.get('franchise');
+        const registrationOfTheVehicleOwnerRd = await redisClient.get('registrationOfTheVehicleOwner');
+
+        const vehicleNumRd = await redisClient.get('vehicleNum');
+        const serialDataRd = await redisClient.get('serialData');
+        const numDataRd = await redisClient.get('numData');
+
+        const regionOwnerRd = await redisClient.get('regionOwner');
+        const crymeDistrictRd = await redisClient.get('crymeDistrict');
+        const vinnytsiaDistrictRd = await redisClient.get('vinnytsiaDistrict');
+        const settlementRd = await redisClient.get('settlement');
+        const streetIndexRd = await redisClient.get('streetIndex');
+        const typeStreetRd = await redisClient.get('typeStreet');
+        const titleStreetRd = await redisClient.get('titleStreet');
+        const numHouseRd = await redisClient.get('numHouse');
+        const numApartRd = await redisClient.get('numApart');
+
+        await axios
+            .post('http://127.0.0.1:8888/oranta', {
+                department: departamentRd,
+                typeOfPerson: typeOfPersonRd,
+                typeOfPolicy: typeOfPolicyRd,
+                tariffPlan: tariffPlanElecRd,
+                franchise: franchiseRd,
+                registrationOfTheVehicleOwner: registrationOfTheVehicleOwnerRd,
+                serial: serialDataRd,
+                number: numDataRd,
+                numVehicle: vehicleNumRd,
+                regionOwner: regionOwnerRd,
+                district: vinnytsiaDistrictRd,
+                settlement: settlementRd,
+                streetIndex: streetIndexRd,
+                typeStreet: typeStreetRd,
+                titleStreet: titleStreetRd,
+                numHouse: numHouseRd,
+                numApart: numApartRd,
+            })
+            .then((res) => {
+                //console.log(res.data);
+            })
+            .catch((err) => console.log(err));
     }
 }
 
